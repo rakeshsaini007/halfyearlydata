@@ -392,4 +392,63 @@ const App: React.FC = () => {
                               className={`w-full px-5 py-4 backdrop-blur-sm border-2 rounded-2xl outline-none font-black text-xl text-center transition-all shadow-lg hover:shadow-2xl ${
                                 isInvalid 
                                   ? 'border-red-400 text-red-300 bg-red-500/20 focus:border-red-300 animate-pulse' 
-                                  : `bg-white/10 border-white/20 text-white hover:bg-white/15 focus:bg-white/20 focus:border-white
+                                  : `bg-white/10 border-white/20 text-white hover:bg-white/15 focus:bg-white/20 focus:border-white/40 focus:scale-105`
+                              }`}
+                              placeholder="0"
+                            />
+                          </div>
+                        </div>
+                        
+                        {/* Error Message */}
+                        <div className={`mt-4 transition-all duration-300 ${isInvalid ? 'opacity-100 max-h-10' : 'opacity-0 max-h-0'}`}>
+                          <div className="text-center">
+                            <span className="inline-block text-[10px] font-black text-red-200 bg-red-500/40 px-3 py-1 rounded-full border border-red-400/50 shadow-lg">
+                              CHECK VALUE
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* Action Footer */}
+            <div className="sticky bottom-6 z-20 flex justify-center pb-safe px-4">
+              <button
+                onClick={handleSubmit}
+                disabled={loading}
+                className={`
+                  w-full sm:w-auto group relative overflow-hidden rounded-2xl shadow-2xl transition-all duration-300 hover:scale-[1.02] hover:shadow-indigo-500/50 border border-white/20
+                  ${loading ? 'cursor-not-allowed opacity-90' : 'cursor-pointer'}
+                `}
+              >
+                <div className={`absolute inset-0 bg-gradient-to-r ${isUpdateMode ? 'from-amber-500 to-orange-600' : 'from-indigo-600 to-purple-600'} transition-all duration-300 group-hover:scale-110`}></div>
+                <div className="relative flex items-center justify-center gap-3 px-12 py-5 text-white font-black text-lg tracking-wide">
+                  {loading ? (
+                    <>
+                      <Icons.Loader />
+                      <span>Processing...</span>
+                    </>
+                  ) : (
+                    <>
+                      {isUpdateMode ? <Icons.Refresh /> : <Icons.Save />}
+                      <span>{isUpdateMode ? 'Update Records' : 'Save Records'}</span>
+                      <Icons.ChevronRight />
+                    </>
+                  )}
+                </div>
+              </button>
+            </div>
+            
+            {/* Bottom Spacer */}
+            <div className="h-12"></div>
+          </div>
+        )}
+      </main>
+    </div>
+  );
+};
+
+export default App;
