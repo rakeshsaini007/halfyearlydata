@@ -16,6 +16,30 @@ const Icons = {
   X: () => <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
 };
 
+// --- Theme Configuration ---
+const CLASS_THEMES: Record<number, {
+  bg: string;
+  border: string;
+  text: string;
+  subtext: string;
+  badgeBg: string;
+  badgeText: string;
+  focusRing: string;
+  accent: string;
+  inputBorder: string;
+}> = {
+  1: { bg: 'bg-blue-50', border: 'border-blue-200', text: 'text-blue-900', subtext: 'text-blue-700', badgeBg: 'bg-blue-100', badgeText: 'text-blue-700', focusRing: 'focus:ring-blue-500', accent: 'bg-blue-500', inputBorder: 'border-blue-200' },
+  2: { bg: 'bg-emerald-50', border: 'border-emerald-200', text: 'text-emerald-900', subtext: 'text-emerald-700', badgeBg: 'bg-emerald-100', badgeText: 'text-emerald-700', focusRing: 'focus:ring-emerald-500', accent: 'bg-emerald-500', inputBorder: 'border-emerald-200' },
+  3: { bg: 'bg-violet-50', border: 'border-violet-200', text: 'text-violet-900', subtext: 'text-violet-700', badgeBg: 'bg-violet-100', badgeText: 'text-violet-700', focusRing: 'focus:ring-violet-500', accent: 'bg-violet-500', inputBorder: 'border-violet-200' },
+  4: { bg: 'bg-rose-50', border: 'border-rose-200', text: 'text-rose-900', subtext: 'text-rose-700', badgeBg: 'bg-rose-100', badgeText: 'text-rose-700', focusRing: 'focus:ring-rose-500', accent: 'bg-rose-500', inputBorder: 'border-rose-200' },
+  5: { bg: 'bg-amber-50', border: 'border-amber-200', text: 'text-amber-900', subtext: 'text-amber-700', badgeBg: 'bg-amber-100', badgeText: 'text-amber-700', focusRing: 'focus:ring-amber-500', accent: 'bg-amber-500', inputBorder: 'border-amber-200' },
+  6: { bg: 'bg-cyan-50', border: 'border-cyan-200', text: 'text-cyan-900', subtext: 'text-cyan-700', badgeBg: 'bg-cyan-100', badgeText: 'text-cyan-700', focusRing: 'focus:ring-cyan-500', accent: 'bg-cyan-500', inputBorder: 'border-cyan-200' },
+  7: { bg: 'bg-indigo-50', border: 'border-indigo-200', text: 'text-indigo-900', subtext: 'text-indigo-700', badgeBg: 'bg-indigo-100', badgeText: 'text-indigo-700', focusRing: 'focus:ring-indigo-500', accent: 'bg-indigo-500', inputBorder: 'border-indigo-200' },
+  8: { bg: 'bg-fuchsia-50', border: 'border-fuchsia-200', text: 'text-fuchsia-900', subtext: 'text-fuchsia-700', badgeBg: 'bg-fuchsia-100', badgeText: 'text-fuchsia-700', focusRing: 'focus:ring-fuchsia-500', accent: 'bg-fuchsia-500', inputBorder: 'border-fuchsia-200' },
+};
+
+const DEFAULT_THEME = { bg: 'bg-slate-50', border: 'border-slate-200', text: 'text-slate-900', subtext: 'text-slate-600', badgeBg: 'bg-slate-100', badgeText: 'text-slate-700', focusRing: 'focus:ring-slate-500', accent: 'bg-slate-500', inputBorder: 'border-slate-300' };
+
 // --- Toast Component ---
 const Toast = ({ message, type, onClose }: { message: string, type: 'success' | 'error', onClose: () => void }) => {
   useEffect(() => {
@@ -148,7 +172,7 @@ const App: React.FC = () => {
   const isUpdateMode = !!schoolDetails?.existingData;
 
   return (
-    <div className="min-h-screen bg-slate-50 flex flex-col font-sans text-slate-900 relative">
+    <div className="min-h-screen bg-slate-100 flex flex-col font-sans text-slate-900 relative">
       
       {/* Background Decorative Elements */}
       <div className="fixed inset-0 pointer-events-none overflow-hidden">
@@ -157,17 +181,17 @@ const App: React.FC = () => {
       </div>
 
       {/* Floating Header */}
-      <header className="sticky top-0 z-30 bg-white/80 backdrop-blur-lg border-b border-slate-200/60 shadow-sm">
+      <header className="sticky top-0 z-30 bg-white/90 backdrop-blur-lg border-b border-slate-200 shadow-sm">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <div className="bg-indigo-600 p-1.5 rounded-lg text-white">
+            <div className="bg-indigo-600 p-2 rounded-lg text-white shadow-lg shadow-indigo-200">
               <Icons.School />
             </div>
-            <h1 className="text-xl font-bold tracking-tight bg-gradient-to-r from-indigo-700 to-blue-600 bg-clip-text text-transparent">
-              EduData Portal
+            <h1 className="text-xl font-bold tracking-tight text-slate-800">
+              EduData <span className="text-indigo-600">Portal</span>
             </h1>
           </div>
-          <div className="text-xs font-medium text-slate-500 bg-slate-100 px-3 py-1 rounded-full border border-slate-200 hidden sm:block">
+          <div className="text-xs font-semibold text-slate-600 bg-slate-50 px-3 py-1.5 rounded-full border border-slate-200 hidden sm:block">
             {new Date().toLocaleDateString(undefined, { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
           </div>
         </div>
@@ -176,39 +200,35 @@ const App: React.FC = () => {
       {/* Toast Container */}
       {message && <Toast type={message.type} message={message.text} onClose={() => setMessage(null)} />}
 
-      <main className="flex-grow max-w-6xl mx-auto px-4 sm:px-6 py-8 relative z-10 w-full">
+      <main className="flex-grow max-w-6xl mx-auto px-4 sm:px-6 py-10 relative z-10 w-full">
         
         {/* Search Section */}
-        <div className="max-w-2xl mx-auto mb-10 text-center animate-fade-in-up">
-          <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 mb-4 tracking-tight">
+        <div className="max-w-2xl mx-auto mb-12 text-center animate-fade-in-up">
+          <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-800 mb-3 tracking-tight">
             School Data Entry
           </h2>
-          <p className="text-slate-600 mb-8 text-lg">
-            Enter UDISE code to fetch details and update enrollment statistics.
+          <p className="text-slate-500 mb-8 text-lg font-medium">
+            Enter UDISE code to manage student records.
           </p>
 
-          <div className="relative group">
-            <div className="absolute -inset-1 bg-gradient-to-r from-indigo-500 to-blue-500 rounded-xl blur opacity-25 group-hover:opacity-40 transition duration-200"></div>
-            <form onSubmit={handleSearch} className="relative flex flex-col sm:flex-row bg-white rounded-xl shadow-xl overflow-hidden p-2">
-              <div className="flex-grow flex items-center px-4">
-                <div className="text-slate-400 mr-3">
-                   <Icons.Search />
-                </div>
-                <input
-                  type="text"
-                  value={udiseInput}
-                  onChange={(e) => setUdiseInput(e.target.value)}
-                  placeholder="Enter UDISE Code (e.g. 9050300106)"
-                  className="w-full py-3 bg-transparent text-lg font-medium text-slate-900 placeholder:text-slate-400 outline-none"
-                  autoFocus
-                />
-              </div>
+          <div className="relative group max-w-lg mx-auto">
+            <div className="absolute -inset-1.5 bg-gradient-to-r from-indigo-500 to-blue-500 rounded-2xl blur opacity-25 group-hover:opacity-50 transition duration-300"></div>
+            <form onSubmit={handleSearch} className="relative flex p-1.5 bg-white rounded-2xl shadow-xl border border-slate-100">
+              <input
+                type="text"
+                value={udiseInput}
+                onChange={(e) => setUdiseInput(e.target.value)}
+                placeholder="Ex: 9050300106"
+                className="w-full pl-5 pr-4 py-3 bg-transparent text-lg font-bold text-slate-800 placeholder:text-slate-400 placeholder:font-normal outline-none"
+                autoFocus
+              />
               <button
                 type="submit"
                 disabled={loading}
-                className="mt-2 sm:mt-0 sm:ml-2 bg-indigo-600 hover:bg-indigo-700 text-white px-8 py-3 rounded-lg font-semibold shadow-md transition-all active:scale-95 disabled:opacity-70 flex items-center justify-center gap-2"
+                className="bg-indigo-600 hover:bg-indigo-700 text-white px-6 rounded-xl font-semibold shadow-md transition-all active:scale-95 disabled:opacity-70 flex items-center justify-center min-w-[50px] sm:min-w-[120px]"
               >
-                {loading ? <Icons.Loader /> : <span>Fetch Data</span>}
+                {loading ? <Icons.Loader /> : <span className="hidden sm:inline">Search</span>}
+                <span className="sm:hidden"><Icons.Search /></span>
               </button>
             </form>
           </div>
@@ -219,68 +239,51 @@ const App: React.FC = () => {
           <div className="animate-[fadeInUp_0.6s_ease-out_forwards] space-y-8">
             
             {/* School Info Card */}
-            <div className="bg-white rounded-2xl shadow-lg border border-slate-100 overflow-hidden relative group">
-              {/* Decorative accent top bar */}
-              <div className={`h-1.5 w-full bg-gradient-to-r ${isUpdateMode ? 'from-amber-400 via-orange-500 to-amber-600' : 'from-indigo-500 via-purple-500 to-blue-500'}`}></div>
+            <div className="bg-white rounded-2xl shadow-xl border border-slate-100 overflow-hidden">
+              <div className={`h-2 w-full bg-gradient-to-r ${isUpdateMode ? 'from-amber-400 via-orange-500 to-amber-600' : 'from-indigo-500 via-purple-500 to-blue-500'}`}></div>
               
               <div className="p-6 sm:p-8">
-                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
+                <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
                   <div>
-                    <h3 className="text-2xl font-bold text-slate-900">{schoolDetails.name}</h3>
-                    <div className="flex items-center gap-2 mt-1 text-slate-500 text-sm font-medium">
-                       <span>UDISE: {schoolDetails.udise}</span>
-                       <span className="w-1 h-1 bg-slate-300 rounded-full"></span>
-                       <span>{schoolDetails.panchayat}</span>
+                    <h3 className="text-2xl font-bold text-slate-900 leading-tight">{schoolDetails.name}</h3>
+                    <div className="flex flex-wrap items-center gap-4 mt-2">
+                       <div className="flex items-center gap-2 text-slate-500 text-sm font-semibold bg-slate-100 px-3 py-1 rounded-md">
+                          <span className="uppercase text-xs tracking-wider text-slate-400">UDISE</span>
+                          <span className="text-slate-700">{schoolDetails.udise}</span>
+                       </div>
+                       <div className="flex items-center gap-2 text-slate-500 text-sm font-semibold bg-slate-100 px-3 py-1 rounded-md">
+                          <span className="uppercase text-xs tracking-wider text-slate-400">Panchayat</span>
+                          <span className="text-slate-700">{schoolDetails.panchayat}</span>
+                       </div>
                     </div>
                   </div>
                   <div className="flex items-center gap-3">
                     {isUpdateMode && (
-                      <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-amber-50 text-amber-700 border border-amber-200 shadow-sm animate-bounce-subtle">
-                        <span className="w-1.5 h-1.5 rounded-full bg-amber-500"></span>
+                      <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold bg-amber-100 text-amber-800 border border-amber-200 shadow-sm animate-bounce-subtle">
+                        <span className="w-2 h-2 rounded-full bg-amber-600"></span>
                         UPDATE MODE
                       </span>
                     )}
-                    <span className={`px-4 py-1.5 rounded-full text-sm font-bold tracking-wide shadow-sm border ${
-                      schoolDetails.type === 'PS' ? 'bg-emerald-50 text-emerald-700 border-emerald-100' :
-                      schoolDetails.type === 'UPS' ? 'bg-blue-50 text-blue-700 border-blue-100' :
-                      'bg-purple-50 text-purple-700 border-purple-100'
+                    <span className={`px-5 py-2 rounded-lg text-sm font-bold tracking-wide shadow-sm border ${
+                      schoolDetails.type === 'PS' ? 'bg-emerald-100 text-emerald-800 border-emerald-200' :
+                      schoolDetails.type === 'UPS' ? 'bg-blue-100 text-blue-800 border-blue-200' :
+                      'bg-purple-100 text-purple-800 border-purple-200'
                     }`}>
                       {schoolDetails.type}
                     </span>
                   </div>
-                </div>
-
-                {/* Info Grid */}
-                <div className="bg-slate-50/50 rounded-xl p-4 border border-slate-100 grid grid-cols-1 md:grid-cols-3 gap-6">
-                   <div className="flex flex-col">
-                      <span className="text-xs uppercase tracking-wider font-semibold text-slate-400 mb-1">Total Classes</span>
-                      <span className="font-semibold text-slate-700">{relevantClasses.length} Grades</span>
-                   </div>
-                   <div className="flex flex-col">
-                      <span className="text-xs uppercase tracking-wider font-semibold text-slate-400 mb-1">Status</span>
-                      <span className="font-semibold text-slate-700">{isUpdateMode ? 'Existing Record' : 'New Entry'}</span>
-                   </div>
-                   <div className="flex flex-col">
-                      <span className="text-xs uppercase tracking-wider font-semibold text-slate-400 mb-1">Action</span>
-                      <span className={`font-semibold ${isUpdateMode ? 'text-amber-600' : 'text-indigo-600'}`}>
-                        {isUpdateMode ? 'Modify & Update' : 'Fill & Save'}
-                      </span>
-                   </div>
                 </div>
               </div>
             </div>
 
             {/* Inputs Grid */}
             <div>
-              <div className="flex items-center justify-between mb-6 px-1">
+              <div className="flex items-center justify-between mb-6 px-2">
                  <h3 className="text-xl font-bold text-slate-800 flex items-center gap-2">
-                    Class Enrollment
-                    <span className="text-xs font-normal text-slate-400 bg-white border px-2 py-0.5 rounded-md shadow-sm hidden sm:inline-block">
-                      Only numbers allowed
-                    </span>
+                    Classwise Enrollment
                  </h3>
-                 <div className="text-sm text-slate-500 font-medium">
-                    Appeared ≤ Enrolled
+                 <div className="text-sm font-bold text-slate-500 bg-white px-3 py-1 rounded-full shadow-sm border border-slate-200">
+                    Rule: Appeared ≤ Enrolled
                  </div>
               </div>
 
@@ -288,58 +291,65 @@ const App: React.FC = () => {
                 {relevantClasses.map((cls, index) => {
                   const data = formData[cls] || { enrolled: '', appeared: '' };
                   const isInvalid = parseInt(data.appeared) > parseInt(data.enrolled);
+                  const theme = CLASS_THEMES[cls] || DEFAULT_THEME;
 
                   return (
                     <div 
                       key={cls} 
-                      className={`bg-white rounded-xl shadow-sm border p-5 transition-all duration-300 hover:shadow-lg hover:-translate-y-1 ${
-                        isInvalid ? 'border-red-300 ring-2 ring-red-100' : 'border-slate-200'
-                      }`}
+                      className={`relative overflow-hidden rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border ${theme.border} ${theme.bg}`}
                       style={{ animationDelay: `${index * 50}ms` }}
                     >
-                      <div className="flex justify-between items-center mb-4">
-                        <div className="w-10 h-10 rounded-lg bg-indigo-50 flex items-center justify-center font-bold text-indigo-700 border border-indigo-100">
-                          {cls}
-                        </div>
-                        <span className="text-xs font-semibold text-slate-400 uppercase">Class</span>
-                      </div>
+                      {/* Color Accent Bar */}
+                      <div className={`absolute top-0 left-0 w-full h-1.5 ${theme.accent}`}></div>
 
-                      <div className="space-y-4">
-                        <div className="relative group/input">
-                          <label className="block text-xs font-bold text-slate-500 mb-1.5 ml-1">ENROLLED</label>
-                          <input
-                            type="text"
-                            inputMode="numeric"
-                            value={data.enrolled || ''}
-                            onChange={(e) => handleClassDataChange(cls, 'enrolled', e.target.value)}
-                            className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-lg focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none font-semibold text-center text-slate-900 transition-all group-hover/input:bg-white"
-                            placeholder="0"
-                          />
+                      <div className="p-5">
+                        {/* Card Header */}
+                        <div className="flex justify-between items-center mb-5">
+                           <div className={`w-12 h-12 rounded-xl flex items-center justify-center text-xl font-black shadow-sm ${theme.badgeBg} ${theme.badgeText}`}>
+                              {cls}
+                           </div>
+                           <span className={`text-xs font-bold uppercase tracking-widest ${theme.subtext}`}>Class</span>
                         </div>
-                        <div className="relative group/input">
-                          <label className="block text-xs font-bold text-slate-500 mb-1.5 ml-1">APPEARED</label>
-                          <input
-                            type="text"
-                            inputMode="numeric"
-                            value={data.appeared || ''}
-                            onChange={(e) => handleClassDataChange(cls, 'appeared', e.target.value)}
-                            className={`w-full px-4 py-2.5 border rounded-lg focus:ring-2 outline-none font-semibold text-center transition-all group-hover/input:bg-white ${
-                              isInvalid 
-                                ? 'bg-red-50 border-red-300 focus:ring-red-200 text-red-600' 
-                                : 'bg-slate-50 border-slate-200 focus:ring-indigo-500/20 focus:border-indigo-500 text-slate-900'
-                            }`}
-                            placeholder="0"
-                          />
+
+                        {/* Input Fields */}
+                        <div className="space-y-5">
+                          <div>
+                            <label className={`block text-xs font-extrabold uppercase mb-2 ml-1 tracking-wide ${theme.subtext}`}>Enrolled</label>
+                            <input
+                              type="text"
+                              inputMode="numeric"
+                              value={data.enrolled || ''}
+                              onChange={(e) => handleClassDataChange(cls, 'enrolled', e.target.value)}
+                              className={`w-full px-4 py-3 bg-white border-2 rounded-xl outline-none font-bold text-lg text-slate-900 text-center transition-all shadow-sm ${theme.inputBorder} ${theme.focusRing} focus:border-transparent focus:ring-4 focus:ring-opacity-20`}
+                              placeholder="0"
+                            />
+                          </div>
+                          <div>
+                            <label className={`block text-xs font-extrabold uppercase mb-2 ml-1 tracking-wide ${theme.subtext}`}>Appeared</label>
+                            <input
+                              type="text"
+                              inputMode="numeric"
+                              value={data.appeared || ''}
+                              onChange={(e) => handleClassDataChange(cls, 'appeared', e.target.value)}
+                              className={`w-full px-4 py-3 bg-white border-2 rounded-xl outline-none font-bold text-lg text-center transition-all shadow-sm ${
+                                isInvalid 
+                                  ? 'border-red-400 text-red-600 focus:ring-red-400 bg-red-50' 
+                                  : `${theme.inputBorder} text-slate-900 ${theme.focusRing} focus:border-transparent focus:ring-4 focus:ring-opacity-20`
+                              }`}
+                              placeholder="0"
+                            />
+                          </div>
+                        </div>
+                        
+                        {/* Error Message */}
+                        <div className={`mt-4 transition-all duration-300 ${isInvalid ? 'opacity-100 max-h-10' : 'opacity-0 max-h-0'}`}>
+                          <div className="text-center">
+                            <span className="inline-block text-[10px] font-bold text-red-600 bg-red-100 px-3 py-1 rounded-full border border-red-200">
+                              CHECK VALUE
+                            </span>
+                          </div>
                         </div>
                       </div>
-                      
-                      {isInvalid && (
-                        <div className="mt-3 text-center">
-                          <span className="inline-block text-[10px] font-bold text-red-500 bg-red-50 px-2 py-1 rounded border border-red-100">
-                            Check Values
-                          </span>
-                        </div>
-                      )}
                     </div>
                   );
                 })}
@@ -347,17 +357,17 @@ const App: React.FC = () => {
             </div>
 
             {/* Action Footer */}
-            <div className="sticky bottom-6 z-20 flex justify-center pb-safe">
+            <div className="sticky bottom-6 z-20 flex justify-center pb-safe px-4">
               <button
                 onClick={handleSubmit}
                 disabled={loading}
                 className={`
-                  group relative overflow-hidden rounded-full shadow-2xl transition-all duration-300 hover:scale-105 hover:shadow-indigo-500/30
+                  w-full sm:w-auto group relative overflow-hidden rounded-2xl shadow-2xl transition-all duration-300 hover:scale-[1.02] hover:shadow-indigo-500/30
                   ${loading ? 'cursor-not-allowed opacity-90' : 'cursor-pointer'}
                 `}
               >
                 <div className={`absolute inset-0 bg-gradient-to-r ${isUpdateMode ? 'from-amber-500 to-orange-600' : 'from-indigo-600 to-blue-600'} transition-all duration-300 group-hover:scale-110`}></div>
-                <div className="relative flex items-center gap-3 px-10 py-4 text-white font-bold text-lg tracking-wide">
+                <div className="relative flex items-center justify-center gap-3 px-12 py-4 text-white font-bold text-lg tracking-wide">
                   {loading ? (
                     <>
                       <Icons.Loader />
