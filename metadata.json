@@ -1,0 +1,5 @@
+{
+  "name": "School Data Entry Portal",
+  "description": "A React application for entering school enrollment and appearance data, integrated with Google Sheets via Google Apps Script.",
+  "requestFramePermissions": []
+}
