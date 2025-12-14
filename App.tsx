@@ -50,17 +50,17 @@ const Toast = ({ message, type, onClose }: { message: string, type: 'success' | 
   return (
     <div className={`fixed top-4 right-4 z-50 flex items-center gap-3 px-6 py-4 rounded-xl shadow-2xl transition-all duration-500 animate-[fadeInUp_0.3s_ease-out] border backdrop-blur-md ${
       type === 'success' 
-        ? 'bg-emerald-50/95 border-emerald-200 text-emerald-900' 
-        : 'bg-red-50/95 border-red-200 text-red-900'
+        ? 'bg-emerald-500/90 border-emerald-400 text-white' 
+        : 'bg-red-500/90 border-red-400 text-white'
     }`}>
-      <div className={`p-2 rounded-full ${type === 'success' ? 'bg-emerald-100 text-emerald-600' : 'bg-red-100 text-red-600'}`}>
+      <div className={`p-2 rounded-full ${type === 'success' ? 'bg-white/20' : 'bg-white/20'}`}>
         {type === 'success' ? <Icons.Check /> : <Icons.Alert />}
       </div>
       <div className="flex-1">
         <h4 className="font-bold text-sm">{type === 'success' ? 'Success' : 'Error'}</h4>
         <p className="text-sm opacity-90">{message}</p>
       </div>
-      <button onClick={onClose} className="p-1 hover:bg-black/5 rounded-full transition-colors">
+      <button onClick={onClose} className="p-1 hover:bg-white/10 rounded-full transition-colors">
         <Icons.X />
       </button>
     </div>
@@ -172,27 +172,64 @@ const App: React.FC = () => {
   const isUpdateMode = !!schoolDetails?.existingData;
 
   return (
-    <div className="min-h-screen bg-slate-100 flex flex-col font-sans text-slate-900 relative">
+    <div className="min-h-screen bg-gradient-to-br from-slate-950 via-indigo-950 to-slate-900 flex flex-col font-sans text-white relative overflow-hidden">
       
-      {/* Background Decorative Elements */}
+      {/* Animated Background Elements */}
       <div className="fixed inset-0 pointer-events-none overflow-hidden">
-         <div className="absolute -top-20 -right-20 w-96 h-96 bg-indigo-100 rounded-full blur-3xl opacity-50"></div>
-         <div className="absolute top-40 -left-20 w-72 h-72 bg-blue-100 rounded-full blur-3xl opacity-50"></div>
+         <div className="absolute -top-20 -right-20 w-96 h-96 bg-indigo-500 rounded-full blur-3xl opacity-20 animate-pulse"></div>
+         <div className="absolute top-40 -left-20 w-72 h-72 bg-blue-500 rounded-full blur-3xl opacity-20 animate-pulse" style={{animationDelay: '1s'}}></div>
+         <div className="absolute bottom-20 right-1/3 w-80 h-80 bg-purple-500 rounded-full blur-3xl opacity-15 animate-pulse" style={{animationDelay: '2s'}}></div>
+         
+         {/* Floating Particles */}
+         {[...Array(20)].map((_, i) => (
+           <div
+             key={i}
+             className="absolute w-1 h-1 bg-white rounded-full opacity-30"
+             style={{
+               top: `${Math.random() * 100}%`,
+               left: `${Math.random() * 100}%`,
+               animation: `float ${5 + Math.random() * 10}s linear infinite`,
+               animationDelay: `${Math.random() * 5}s`
+             }}
+           />
+         ))}
       </div>
+      
+      <style>{`
+        @keyframes float {
+          0%, 100% { transform: translateY(0) translateX(0); }
+          25% { transform: translateY(-20px) translateX(10px); }
+          50% { transform: translateY(-40px) translateX(-10px); }
+          75% { transform: translateY(-20px) translateX(5px); }
+        }
+        @keyframes fadeInUp {
+          from { opacity: 0; transform: translateY(30px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes shimmer {
+          0% { background-position: -1000px 0; }
+          100% { background-position: 1000px 0; }
+        }
+        .animate-fade-in-up { animation: fadeInUp 0.8s ease-out; }
+        .animate-bounce-subtle { animation: bounce 2s infinite; }
+      `}</style>
 
-      {/* Floating Header */}
-      <header className="sticky top-0 z-30 bg-white/90 backdrop-blur-lg border-b border-slate-200 shadow-sm">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <div className="bg-indigo-600 p-2 rounded-lg text-white shadow-lg shadow-indigo-200">
+      {/* Modern Glass Header */}
+      <header className="sticky top-0 z-30 bg-white/5 backdrop-blur-2xl border-b border-white/10 shadow-2xl">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 h-20 flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="bg-gradient-to-br from-indigo-500 to-purple-600 p-3 rounded-2xl text-white shadow-2xl shadow-indigo-500/50 transform hover:scale-110 transition-transform duration-300">
               <Icons.School />
             </div>
-            <h1 className="text-xl font-bold tracking-tight text-slate-800">
-              EduData <span className="text-indigo-600">Portal</span>
-            </h1>
+            <div>
+              <h1 className="text-2xl font-black tracking-tight text-white">
+                EduData <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-purple-400">Portal</span>
+              </h1>
+              <p className="text-xs text-slate-400 font-medium">Student Records Management</p>
+            </div>
           </div>
-          <div className="text-xs font-semibold text-slate-600 bg-slate-50 px-3 py-1.5 rounded-full border border-slate-200 hidden sm:block">
-            {new Date().toLocaleDateString(undefined, { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
+          <div className="text-xs font-bold text-white/80 bg-white/10 backdrop-blur-sm px-4 py-2 rounded-full border border-white/20 hidden sm:block hover:bg-white/15 transition-all">
+            {new Date().toLocaleDateString(undefined, { weekday: 'short', month: 'short', day: 'numeric' })}
           </div>
         </div>
       </header>
@@ -202,30 +239,32 @@ const App: React.FC = () => {
 
       <main className="flex-grow max-w-6xl mx-auto px-4 sm:px-6 py-10 relative z-10 w-full">
         
-        {/* Search Section */}
+        {/* Modern Search Section */}
         <div className="max-w-2xl mx-auto mb-12 text-center animate-fade-in-up">
-          <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-800 mb-3 tracking-tight">
-            School Data Entry
-          </h2>
-          <p className="text-slate-500 mb-8 text-lg font-medium">
-            Enter UDISE code to manage student records.
-          </p>
+          <div className="mb-6">
+            <h2 className="text-4xl sm:text-5xl font-black text-white mb-4 tracking-tight">
+              School Data Entry
+            </h2>
+            <p className="text-slate-300 text-lg font-medium">
+              Enter UDISE code to manage student records
+            </p>
+          </div>
 
           <div className="relative group max-w-lg mx-auto">
-            <div className="absolute -inset-1.5 bg-gradient-to-r from-indigo-500 to-blue-500 rounded-2xl blur opacity-25 group-hover:opacity-50 transition duration-300"></div>
-            <form onSubmit={handleSearch} className="relative flex p-1.5 bg-white rounded-2xl shadow-xl border border-slate-100">
+            <div className="absolute -inset-2 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 rounded-3xl blur-xl opacity-40 group-hover:opacity-60 transition duration-500 animate-pulse"></div>
+            <form onSubmit={handleSearch} className="relative flex p-2 bg-white/10 backdrop-blur-xl rounded-3xl shadow-2xl border border-white/20">
               <input
                 type="text"
                 value={udiseInput}
                 onChange={(e) => setUdiseInput(e.target.value)}
                 placeholder="Ex: 9050300106"
-                className="w-full pl-5 pr-4 py-3 bg-transparent text-lg font-bold text-slate-800 placeholder:text-slate-400 placeholder:font-normal outline-none"
+                className="w-full pl-6 pr-4 py-4 bg-transparent text-xl font-bold text-white placeholder:text-white/40 placeholder:font-normal outline-none"
                 autoFocus
               />
               <button
                 type="submit"
                 disabled={loading}
-                className="bg-indigo-600 hover:bg-indigo-700 text-white px-6 rounded-xl font-semibold shadow-md transition-all active:scale-95 disabled:opacity-70 flex items-center justify-center min-w-[50px] sm:min-w-[120px]"
+                className="bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white px-8 rounded-2xl font-bold shadow-lg shadow-indigo-500/50 transition-all duration-300 active:scale-95 disabled:opacity-70 flex items-center justify-center min-w-[50px] sm:min-w-[130px] hover:shadow-2xl hover:shadow-indigo-500/60"
               >
                 {loading ? <Icons.Loader /> : <span className="hidden sm:inline">Search</span>}
                 <span className="sm:hidden"><Icons.Search /></span>
@@ -238,36 +277,36 @@ const App: React.FC = () => {
         {schoolDetails && (
           <div className="animate-[fadeInUp_0.6s_ease-out_forwards] space-y-8">
             
-            {/* School Info Card */}
-            <div className="bg-white rounded-2xl shadow-xl border border-slate-100 overflow-hidden">
-              <div className={`h-2 w-full bg-gradient-to-r ${isUpdateMode ? 'from-amber-400 via-orange-500 to-amber-600' : 'from-indigo-500 via-purple-500 to-blue-500'}`}></div>
+            {/* Premium School Info Card */}
+            <div className="bg-white/10 backdrop-blur-2xl rounded-3xl shadow-2xl border border-white/20 overflow-hidden transform hover:scale-[1.01] transition-all duration-300">
+              <div className={`h-2 w-full ${isUpdateMode ? 'bg-gradient-to-r from-amber-400 via-orange-500 to-red-500' : 'bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500'}`}></div>
               
-              <div className="p-6 sm:p-8">
+              <div className="p-8 sm:p-10">
                 <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
-                  <div>
-                    <h3 className="text-2xl font-bold text-slate-900 leading-tight">{schoolDetails.name}</h3>
-                    <div className="flex flex-wrap items-center gap-4 mt-2">
-                       <div className="flex items-center gap-2 text-slate-500 text-sm font-semibold bg-slate-100 px-3 py-1 rounded-md">
-                          <span className="uppercase text-xs tracking-wider text-slate-400">UDISE</span>
-                          <span className="text-slate-700">{schoolDetails.udise}</span>
+                  <div className="flex-1">
+                    <h3 className="text-3xl font-black text-white leading-tight mb-4">{schoolDetails.name}</h3>
+                    <div className="flex flex-wrap items-center gap-3">
+                       <div className="flex items-center gap-2 text-white/80 text-sm font-bold bg-white/5 backdrop-blur-sm px-4 py-2 rounded-xl border border-white/10 hover:bg-white/10 transition-all">
+                          <span className="uppercase text-xs tracking-wider text-white/50">UDISE</span>
+                          <span className="text-white font-black">{schoolDetails.udise}</span>
                        </div>
-                       <div className="flex items-center gap-2 text-slate-500 text-sm font-semibold bg-slate-100 px-3 py-1 rounded-md">
-                          <span className="uppercase text-xs tracking-wider text-slate-400">Panchayat</span>
-                          <span className="text-slate-700">{schoolDetails.panchayat}</span>
+                       <div className="flex items-center gap-2 text-white/80 text-sm font-bold bg-white/5 backdrop-blur-sm px-4 py-2 rounded-xl border border-white/10 hover:bg-white/10 transition-all">
+                          <span className="uppercase text-xs tracking-wider text-white/50">Panchayat</span>
+                          <span className="text-white font-black">{schoolDetails.panchayat}</span>
                        </div>
                     </div>
                   </div>
                   <div className="flex items-center gap-3">
                     {isUpdateMode && (
-                      <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold bg-amber-100 text-amber-800 border border-amber-200 shadow-sm animate-bounce-subtle">
-                        <span className="w-2 h-2 rounded-full bg-amber-600"></span>
+                      <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs font-black bg-gradient-to-r from-amber-400 to-orange-500 text-white border border-amber-300/50 shadow-lg shadow-amber-500/30 animate-bounce-subtle">
+                        <span className="w-2 h-2 rounded-full bg-white animate-pulse"></span>
                         UPDATE MODE
                       </span>
                     )}
-                    <span className={`px-5 py-2 rounded-lg text-sm font-bold tracking-wide shadow-sm border ${
-                      schoolDetails.type === 'PS' ? 'bg-emerald-100 text-emerald-800 border-emerald-200' :
-                      schoolDetails.type === 'UPS' ? 'bg-blue-100 text-blue-800 border-blue-200' :
-                      'bg-purple-100 text-purple-800 border-purple-200'
+                    <span className={`px-6 py-3 rounded-xl text-sm font-black tracking-wide shadow-xl border-2 backdrop-blur-sm ${
+                      schoolDetails.type === 'PS' ? 'bg-emerald-500/20 text-emerald-300 border-emerald-400/50 shadow-emerald-500/30' :
+                      schoolDetails.type === 'UPS' ? 'bg-blue-500/20 text-blue-300 border-blue-400/50 shadow-blue-500/30' :
+                      'bg-purple-500/20 text-purple-300 border-purple-400/50 shadow-purple-500/30'
                     }`}>
                       {schoolDetails.type}
                     </span>
@@ -276,13 +315,14 @@ const App: React.FC = () => {
               </div>
             </div>
 
-            {/* Inputs Grid */}
+            {/* Inputs Grid Section */}
             <div>
-              <div className="flex items-center justify-between mb-6 px-2">
-                 <h3 className="text-xl font-bold text-slate-800 flex items-center gap-2">
+              <div className="flex items-center justify-between mb-8 px-2">
+                 <h3 className="text-2xl font-black text-white flex items-center gap-3">
+                    <span className="w-1.5 h-8 bg-gradient-to-b from-indigo-400 to-purple-500 rounded-full"></span>
                     Classwise Enrollment
                  </h3>
-                 <div className="text-sm font-bold text-slate-500 bg-white px-3 py-1 rounded-full shadow-sm border border-slate-200">
+                 <div className="text-sm font-black text-white/80 bg-white/10 backdrop-blur-sm px-5 py-2 rounded-full shadow-lg border border-white/20">
                     Rule: Appeared ≤ Enrolled
                  </div>
               </div>
@@ -296,101 +336,60 @@ const App: React.FC = () => {
                   return (
                     <div 
                       key={cls} 
-                      className={`relative overflow-hidden rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border ${theme.border} ${theme.bg}`}
-                      style={{ animationDelay: `${index * 50}ms` }}
+                      className={`relative overflow-hidden rounded-3xl shadow-2xl hover:shadow-indigo-500/50 transition-all duration-500 hover:-translate-y-2 hover:scale-105 border-2 bg-white/10 backdrop-blur-2xl border-white/20`}
+                      style={{ animationDelay: `${index * 100}ms`, animation: 'fadeInUp 0.6s ease-out forwards', opacity: 0 }}
                     >
-                      {/* Color Accent Bar */}
-                      <div className={`absolute top-0 left-0 w-full h-1.5 ${theme.accent}`}></div>
+                      {/* Premium Gradient Accent */}
+                      <div className={`absolute top-0 left-0 w-full h-2 bg-gradient-to-r ${
+                        cls === 1 ? 'from-blue-400 to-blue-600' :
+                        cls === 2 ? 'from-emerald-400 to-emerald-600' :
+                        cls === 3 ? 'from-violet-400 to-violet-600' :
+                        cls === 4 ? 'from-rose-400 to-rose-600' :
+                        cls === 5 ? 'from-amber-400 to-amber-600' :
+                        cls === 6 ? 'from-cyan-400 to-cyan-600' :
+                        cls === 7 ? 'from-indigo-400 to-indigo-600' :
+                        'from-fuchsia-400 to-fuchsia-600'
+                      }`}></div>
 
-                      <div className="p-5">
+                      <div className="p-6">
                         {/* Card Header */}
-                        <div className="flex justify-between items-center mb-5">
-                           <div className={`w-12 h-12 rounded-xl flex items-center justify-center text-xl font-black shadow-sm ${theme.badgeBg} ${theme.badgeText}`}>
+                        <div className="flex justify-between items-center mb-6">
+                           <div className={`w-16 h-16 rounded-2xl flex items-center justify-center text-2xl font-black shadow-2xl bg-gradient-to-br text-white transform hover:rotate-12 transition-transform duration-300 ${
+                             cls === 1 ? 'from-blue-400 to-blue-600' :
+                             cls === 2 ? 'from-emerald-400 to-emerald-600' :
+                             cls === 3 ? 'from-violet-400 to-violet-600' :
+                             cls === 4 ? 'from-rose-400 to-rose-600' :
+                             cls === 5 ? 'from-amber-400 to-amber-600' :
+                             cls === 6 ? 'from-cyan-400 to-cyan-600' :
+                             cls === 7 ? 'from-indigo-400 to-indigo-600' :
+                             'from-fuchsia-400 to-fuchsia-600'
+                           }`}>
                               {cls}
                            </div>
-                           <span className={`text-xs font-bold uppercase tracking-widest ${theme.subtext}`}>Class</span>
+                           <span className={`text-xs font-black uppercase tracking-widest text-white/60`}>Class</span>
                         </div>
 
                         {/* Input Fields */}
                         <div className="space-y-5">
                           <div>
-                            <label className={`block text-xs font-extrabold uppercase mb-2 ml-1 tracking-wide ${theme.subtext}`}>Enrolled</label>
+                            <label className={`block text-xs font-black uppercase mb-3 ml-1 tracking-wider text-white/70`}>Enrolled</label>
                             <input
                               type="text"
                               inputMode="numeric"
                               value={data.enrolled || ''}
                               onChange={(e) => handleClassDataChange(cls, 'enrolled', e.target.value)}
-                              className={`w-full px-4 py-3 bg-white border-2 rounded-xl outline-none font-bold text-lg text-slate-900 text-center transition-all shadow-sm ${theme.inputBorder} ${theme.focusRing} focus:border-transparent focus:ring-4 focus:ring-opacity-20`}
+                              className={`w-full px-5 py-4 bg-white/10 backdrop-blur-sm border-2 border-white/20 rounded-2xl outline-none font-black text-xl text-white text-center transition-all shadow-lg hover:shadow-2xl hover:bg-white/15 focus:bg-white/20 focus:border-white/40 focus:scale-105`}
                               placeholder="0"
                             />
                           </div>
                           <div>
-                            <label className={`block text-xs font-extrabold uppercase mb-2 ml-1 tracking-wide ${theme.subtext}`}>Appeared</label>
+                            <label className={`block text-xs font-black uppercase mb-3 ml-1 tracking-wider text-white/70`}>Appeared</label>
                             <input
                               type="text"
                               inputMode="numeric"
                               value={data.appeared || ''}
                               onChange={(e) => handleClassDataChange(cls, 'appeared', e.target.value)}
-                              className={`w-full px-4 py-3 bg-white border-2 rounded-xl outline-none font-bold text-lg text-center transition-all shadow-sm ${
+                              className={`w-full px-5 py-4 backdrop-blur-sm border-2 rounded-2xl outline-none font-black text-xl text-center transition-all shadow-lg hover:shadow-2xl ${
                                 isInvalid 
-                                  ? 'border-red-400 text-red-600 focus:ring-red-400 bg-red-50' 
-                                  : `${theme.inputBorder} text-slate-900 ${theme.focusRing} focus:border-transparent focus:ring-4 focus:ring-opacity-20`
-                              }`}
-                              placeholder="0"
-                            />
-                          </div>
-                        </div>
-                        
-                        {/* Error Message */}
-                        <div className={`mt-4 transition-all duration-300 ${isInvalid ? 'opacity-100 max-h-10' : 'opacity-0 max-h-0'}`}>
-                          <div className="text-center">
-                            <span className="inline-block text-[10px] font-bold text-red-600 bg-red-100 px-3 py-1 rounded-full border border-red-200">
-                              CHECK VALUE
-                            </span>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-
-            {/* Action Footer */}
-            <div className="sticky bottom-6 z-20 flex justify-center pb-safe px-4">
-              <button
-                onClick={handleSubmit}
-                disabled={loading}
-                className={`
-                  w-full sm:w-auto group relative overflow-hidden rounded-2xl shadow-2xl transition-all duration-300 hover:scale-[1.02] hover:shadow-indigo-500/30
-                  ${loading ? 'cursor-not-allowed opacity-90' : 'cursor-pointer'}
-                `}
-              >
-                <div className={`absolute inset-0 bg-gradient-to-r ${isUpdateMode ? 'from-amber-500 to-orange-600' : 'from-indigo-600 to-blue-600'} transition-all duration-300 group-hover:scale-110`}></div>
-                <div className="relative flex items-center justify-center gap-3 px-12 py-4 text-white font-bold text-lg tracking-wide">
-                  {loading ? (
-                    <>
-                      <Icons.Loader />
-                      <span>Processing...</span>
-                    </>
-                  ) : (
-                    <>
-                      {isUpdateMode ? <Icons.Refresh /> : <Icons.Save />}
-                      <span>{isUpdateMode ? 'Update Records' : 'Save Records'}</span>
-                      <Icons.ChevronRight />
-                    </>
-                  )}
-                </div>
-              </button>
-            </div>
-            
-            {/* Bottom Spacer */}
-            <div className="h-12"></div>
-          </div>
-        )}
-      </main>
-    </div>
-  );
-};
-
-export default App;
+                                  ? 'border-red-400 text-red-300 bg-red-500/20 focus:border-red-300 animate-pulse' 
+                                  : `bg-white/10 border-white/20 text-white hover:bg-white/15 focus:bg-white/20 focus:border-white
